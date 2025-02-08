@@ -1,0 +1,56 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .success {
+            list-style: none;
+            background-color: #2e6da4;
+            color: white;
+            box-shadow: 12px 12px 12px #e61c66;
+            text-align: center;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'stockmgm/stylesheet.css'  %}">
+    <title>Item List</title>
+</head>
+<body>
+    {% include 'stockmgm/navbar.html' %} 
+    <div>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div class="header">List Of Items</div>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" value='Search'/>
+    </form>
+    <table class='table'>
+        <thead>
+          <tr>
+            <th>COUNT</th>
+            <th>CATEGORY</th>
+            <th>ITEM NAME</th>
+            <th>QUANTITY IN STORE</th>
+            <th>Delete</th>
+
+          </tr>
+        </thead>
+      {% for instance in queryset %}
+          <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{instance.category}}</td>
+            <td>{{instance.item_name}}</td>
+            <td>{{instance.quantity}}</td>
+          </tr>
+      {% endfor %}
+        </table>
+    </body>
